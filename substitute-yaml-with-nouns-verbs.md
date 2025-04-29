@@ -18,13 +18,13 @@ canonical_url: ""
 runme_blog: true
 ---
 
-A few weeks back, we released Runme for Dagger Shell–a frontend to Dagger’s mighty new Shell interface, and it’s awesome!
+A few weeks back, the folks at Dagger released their [Container-Native Shell](https://dagger.io/blog/a-shell-for-the-container-age-introducing-dagger-shell), and it’s awesome! Leading up to the launch, the team at Stateful was invited for a sneak preview and decided to build a frontend for Dagger Shell into [Runme](https://runme.dev).
 
-> It’s been great collaborating with the Runme team. They get developer tools and they get Dagger - Jeremy Adams, Head of Ecosystem, Dagger
+In this blog post, we'll illustrate how we're using Runme and Dagger to replace the Runme CNCF project’s organically-grown GitHub Actions ‘YAML Pipelines’ with just Nouns and Verbs right from your docs.
 
-In this blog post, we'll illustrate how we're using Runme and Dagger to replace the Runme CNCF project’s organically-grown GitHub Actions ‘YAML Pipelines’ with just Nouns and Verbs.
+I will demonstrate how you can break down your YAML and Bourne-Again Shell spaghetti code into Dagger-powered, portable, and self-documenting pipeline definitions that are native to markdown. Runme stitches together the Dagger Shell scripts on the fly for execution and handles all of the environmental details, keeping your pipelines readable, portable, and executable both remotely and locally.
 
-We’ll show how you can break down your YAML and Bourne-Again Shell spaghetti code into Dagger-powered, portable, and self-documenting pipeline definitions that are native to markdown. Runme stitches together the Dagger Shell scripts on the fly for execution and handles all of the environmental details, keeping your pipelines readable, portable, and executable both remotely and locally. Let’s dive in.
+My name is [Sebastian Huckleberry](https://www.linkedin.com/in/sebastiantiedtke/), I am the CEO at Stateful, we make [Runme](https://runme.dev), and I'm excited to contribute this guest blog post. Let’s dive right in.
 
 <figure>
   <video
@@ -43,7 +43,7 @@ We’ll show how you can break down your YAML and Bourne-Again Shell spaghetti c
   </figcaption>
 </figure>
 
-Consider the following concise Dagger shell snippet. For everyday use, it’s as simple as running `$ runme run IntegrationTests` from anywhere in the project or pressing ▶️ on the cell. That's right, you run the docs.
+Consider the following concise Dagger shell snippet. For everyday use, it’s as simple as running `$ runme run IntegrationTests` from anywhere in the project or pressing ▶️ on the cell. That's right, you **quite literally** run the docs.
 
 <pre>
 &#35;&#35;&#35; Exported in runme.dev as IntegrationTests
@@ -125,12 +125,12 @@ Just like in linguistics, <span style="color:magenta">Nouns</span> can act as su
 
 ## Running Dagger Pipeline using Runme
 
-If linguistics is too far from technology for you, that’s okay. I find it helpful because it’s literally how natural language works. And, in my native language, German, we capitalize nouns without exception, and we often put verbs at the end of sentences.
+If linguistics is too far from technology for you, that’s okay. The team at Stateful, including me, finds it helpful because it’s literally how natural language works. And, in my native language, German, we capitalize nouns without exception, and we often put verbs at the end of sentences.
 
 In any case, getting an installable Runme VS Code from source locally is now trivial, running:
 
-```
-$ runme run ExtensionVsix
+<pre>
+$ runme run <span style="color:magenta">ExtensionVsix</span>
 ✔ connect 0.3s
 ✔ load module 1.0s
 ✔ serving dependency modules 0.0s
@@ -150,14 +150,14 @@ $ .releaseFiles(platform: "darwin/arm64", version: "latest"): Directory! 2.3s CA
 ✔ .bundle: File! 1m42s
 ✔ .export(path: "runme-extension-darwin-arm64.vsix"): String! 0.2s
 
-~/oss/vscode-runme/runme-extension-darwin-arm64.vsix
-```
+<span style="color:magenta">~/oss/vscode-runme/runme-extension-darwin-arm64.vsix</span>
+</pre>
 
-What makes all this work is [Dagger’s Type System](https://docs.dagger.io/#key-features) and the fact that execution is orchestrated in containers. This is a game-changer, not just for security and superior caching, but it also makes debugging pipelines much easier.
+What makes all this work is [Dagger’s Type System](https://docs.dagger.io/#key-features) and the fact that execution is orchestrated in containers. This is a game-changer, not just for security and superior caching, but it also makes debugging pipelines thanks to decomposition much easier.
 
 ## Under the Runme Frontend's Hood
 
-Under the hood, the Runme frontend will transform its markdown/notebook representation into plain Dagger Shell, which, if you wanted, you could run as a Dagger Shell script in and of itself. The following script is exactly what `$ runme run ExtensionVsix` hands off to Dagger.
+Under the hood, the Runme frontend will transparently transform its markdown/notebook representation into plain Dagger Shell, which, if you wanted, you could run as a Dagger Shell script in and of itself. The following script is exactly what `$ runme run ExtensionVsix` hands off to Dagger.
 
 ```
 $ runme print ExtensionVsix
@@ -217,7 +217,7 @@ Extension | bundle | export $EXTENSION_VSIX
 ```
 ````
 
-Running `ExtensionVsix` only requires a subset of all function definitions in the script. In future versions, we could add two features to make the script even more concise:
+Running `ExtensionVsix` only requires a subset of all function definitions in the script above. In future versions, the team working on Runme could add features to make the script even more concise:
 
 1. Prune unexecuted code from the script using a control flow graph
 2. Optionally unnest the call graph and reduce the script to a one-liner
@@ -226,23 +226,25 @@ Now let’s discuss what it takes to achieve portability to run your pipelines a
 
 ## Transparently Configure the Environment
 
-The challenge that fully portable pipelines face, which run both locally and remotely (e.g., GitHub, GitLab, CircleCI, etc), is ‘configuration’ and its extremely sensitive sibling, ‘secrets’. Portable container images are only half the problem because they can’t run without valid configurations. Infrastructure aside, what makes a working ‘Environment’ is both.
+The challenge that fully portable pipelines face, which run both locally and remotely (e.g., GitHub, GitLab, CircleCI, etc), is ‘configuration’ and its extremely sensitive sibling, ‘secrets’. Portable container images are only half the problem because they can’t run without valid configurations. Infrastructure/hardware aside, what makes a working ‘Environment’ is both.
 
-For our Runme delivery pipeline showcase, we need to know the following:
+To successfully run Runme's delivery pipeline, we need to know the following:
 
 - The host’s OS
 - The CPU architecture
 
-These are necessary so that Golang builds the correct binaries. It’s not unusual to run Dagger on OCI container runtimes in heterogeneous environments (e.g., Linux via Docker Desktop on macOS or Windows); this is easier said than done if your team is on macOS and transitioning from `x64` to `ARM`, while all of CI/CD is on `x64` Linux. Moreover, tests won’t complete without the following values:
+These are necessary so that Golang builds the correct binaries. It’s not unusual to run Dagger in OCI container runtimes on heterogeneous environments (e.g., Linux via Docker Desktop on macOS or Windows). Getting OS and architecture right is easier said than done if your team is on macOS and transitioning from `x64` to `ARM`, while all of CI/CD is on `x64` Linux. Moreover, tests won’t complete without the following values:
 
 - GitHub API calls are aggressively throttled unless you provide an authentication token.
 - Runme’s e2e integration suite requires an Access Token to dispatch a GHA workflow.
 - Dynamically include the OS/arch combo into the extension’s file name.
 - GitHub Actions job metadata to disable specific tests on external Pull Requests.
 
+The team building Runme came up with a solution and its 100% compatible with Dagger's Shell.
+
 ## Pipeline Environment Declarations
 
-This is where Runme’s [Owl Store](https://runme.dev/blog/typed-env-vars) and [DotEnv/Direnv](https://docs.runme.dev/configuration/dotenv-direnv) integrations got you covered. We provide an [`.env.spec`](https://github.com/runmedev/vscode-runme/blob/16035ce0da072a6ae4e2e69a00569cb1a25b5cdc/.env.spec) that specifies a valid Environment.
+Enter Runme’s [Owl Store](https://runme.dev/blog/typed-env-vars) with [DotEnv/Direnv](https://docs.runme.dev/configuration/dotenv-direnv) integrations. The way this works is that you provide an [`.env.spec`](https://github.com/runmedev/vscode-runme/blob/16035ce0da072a6ae4e2e69a00569cb1a25b5cdc/.env.spec) that specifies a valid Environment.
 
 ```
 EXTENSION_VSIX="The name of the VS Code extension file." # Plain!
@@ -272,7 +274,7 @@ export GITHUB_ACTOR=${GITHUB_ACTOR:-unknown}
 export GITHUB_EVENT_NAME=${GITHUB_EVENT_NAME:-unknown}
 ```
 
-Runme, as Dagger’s frontend, will resolve the Environment when a session is first created, typically at startup. Running locally, it’s simple to check if pipelines are on the right track:
+Runme, as Dagger’s frontend, will resolve the Environment when a session is first created, typically at startup. Running pipelines locally, it’s simple to check if they are on the right track:
 
 <ImageWithCaption caption="The environment is invalid and will cause the pipeline to fail">
     <img src="substitute-yaml-with-nouns-verbs-invalid-env.png" alt="The environment is invalid and will cause the pipeline to fail" />
@@ -288,7 +290,7 @@ Fixing the token locally is easy. Add the static value (hiding .env from readers
 
 ## Orchestrating the Pipeline with GitHub Actions
 
-We’re still using GitHub Actions to [run the pipeline](https://github.com/runmedev/vscode-runme/blob/16035ce0da072a6ae4e2e69a00569cb1a25b5cdc/.github/workflows/pipeline.yml#L27-L49), which has a feature to manage secrets. However, GitHub’s role here is limited to orchestration. If you ask me, I would rather use the Owl Store to leverage Workload Identity and manage configurations and secrets for Environments. Let’s keep it simple today.
+At Stateful/Runme, we are still using GitHub Actions to [run the pipeline](https://github.com/runmedev/vscode-runme/blob/16035ce0da072a6ae4e2e69a00569cb1a25b5cdc/.github/workflows/pipeline.yml#L27-L49), which comes with a feature to manage secrets. GitHub Action’s role here is limited to scheduling and orchestration. If you ask me, I would rather use the Owl Store and Workload Identity to manage configurations and secrets for Environments. However, one thing at a time.
 
 ```
 [...]
@@ -318,41 +320,39 @@ We’re still using GitHub Actions to [run the pipeline](https://github.com/runm
 [...]
 ```
 
-This workflow runs a cell/task named `test:pipeline,` which is an alias for running our nouns (i.e., `$ runme run UnitTests GhaIntegrationTests`). The latter ensures that GitHub Actions metadata (for checks on PRs) is [passed correctly](https://github.com/runmedev/vscode-runme/blob/main/dagger/BUILD.md#testing) into the integration test suite.
+Looking at the stripped down YAML, this workflow runs a cell/task named `test:pipeline`. It's essentially an alias for running our two testing nouns (i.e., `$ runme run UnitTests GhaIntegrationTests`). The latter additionally [passes GitHub Actions metadata](https://github.com/runmedev/vscode-runme/blob/main/dagger/BUILD.md#testing) (toggling checks on PRs) into the integration test suite.
 
 ## Add a Window Into the E2E Integration Test Suite
 
-To further illustrate how to leverage Runme’s frontend for Dagger, let’s add a new <span style="color:magenta; font-weight: bold">Noun</span>.
-
-If you wanted to inspect results, for example, screenshots taken during tests, you can add a new `IntegrationTestScreenshots` that grabs the directory containing the WebDriver screenshots taken during execution.
+To further illustrate the "Nouns and Verbs" concept, let’s add a new <span style="color:magenta; font-weight: bold">Noun</span> to, for example, grab the screenshots taken during tests. Add a new `IntegrationTestScreenshots` that gets hold off the directory containing the WebDriver screenshots after the test suite has run.
 
 <pre>
 &#35;&#35;&#35; Exported in runme.dev as <span style="color:magenta; font-weight: bold">IntegrationTestScreenshots</span>
 <span style="color:magenta">Extension</span> | <span style="color:blue">integration-test</span> --runme-test-token RUNME_TEST_TOKEN | <span style="color:blue">directory</span> "logs/screenshots" | <span style="color:blue">export</span> /tmp/e2e-screenshots
 </pre>
 
-How exhilarating. We now have a window into the end-to-end test suite if something were to happen. Here’s one screenshot from one of my recent test suite runs:
+How exhilarating. Now we have a window into the end-to-end test suite if something were to happen. Here’s one screenshot from one of my recent test suite runs:
 
 <ImageWithCaption caption="A window into the E2E integration test suite">
     <img src="substitute-yaml-with-nouns-verbs-screenshot.png" alt="A window into the E2E integration test suite" />
 </ImageWithCaption>
 
-While 15 minutes might sound long, I wouldn’t trade the world for the confidence we gain from the end-to-end test suite. But when it runs and fails, it had better identify a real bug that was introduced, rather than failing due to a side effect in the environment.
+While 15 minutes might sound long, at Stateful/Runme, we wouldn’t trade the world for the confidence we gain from the end-to-end test suite. But when it runs and fails, it had better identify a real bug that was introduced, rather than failing due to a side effect in the environment. Dagger's superpower besides caching is that it's simple to run the same pipeline locally, on a VM, or a Codespaces instance to both debug and rule out GitHub Actions being under the weather.
 
 If we added the debug flag to `Extension | integration-test --debug...`, we could take advantage of Dagger’s cache even if the tests fail. This is tremendously useful to check screenshots or logs without the delay of re-running the test suite.
 
-I hope you agree that this simple example illustrates how Dagger’s powerful primitives can be leveraged to maintain a first-class Developer Experience, which is both portable, documentation-native, and quick to turn around. That’s a big win compared to legacy CI/CD best practices, where you can’t have all but are forced to trade off amongst them.
+That being said, I hope you agree that this simple example illustrates how Dagger’s powerful primitives can be leveraged to maintain a first-class Developer Experience, which is both portable, documentation-native, and quick to turn around. That’s a big win compared to legacy CI/CD best practices, where you can’t have all three but are forced to trade off amongst them. Exactly that is what got us at Stateful first excited about Dagger. Now here we are building a Dagger Shell frontend into Runme.
 
 ## Documentation as Software Factory’s Truth
 
-At the Runme CNCF project, we're excited to reduce coupling with any single CI/CD provider, such as GitHub Actions, while maintaining a high bar for developer experience in Runme’s Software Factory. With Runme as a Dagger Shell frontend, the source of truth is always the documentation.
+The build and tests pipelines aren't the end of it. At Stateful we're excited to further reduce coupling of the CNCF Runme project with any single CI/CD provider, such as GitHub Actions, while maintaining a high bar for developer experience in Runme’s Software Factory. With Runme as a Dagger Shell frontend, the source of truth is always your documentation.
 
-While Runme’s migration to Dagger-powered CI/CD pipelines is not complete yet, we have successfully derisked the effort by tackling the bulkiest workflows of the pipeline first:
+The team's happy to have derisked Runme's migration to Dagger-powered CI/CD by tackling the bulkiest workflows first:
 
 1. Building all Artifacts, and
 2. Running Unit and Integration Tests
 
-Now that we have the Delivery Nouns and verbs in their respective Dagger modules, it’s a matter of stringing them together differently depending on what a pipeline's goal is. Next up for the Runme project are three concrete projects:
+Now that we have the Delivery 'Nouns and Verbs' in their respective Dagger modules, it’s a matter of stringing them together differently depending on what a pipeline's goal is. Next up for the Runme project are three concrete projects:
 
 1. Optimize file system dependencies (legacy from pre-container) in E2E tests to reduce inherent brittleness, resulting in fewer retries due to flakes.
 2. Run goreleaser in the Dagger pipeline to release official builds for Runme CLI/kernel.
@@ -360,8 +360,8 @@ Now that we have the Delivery Nouns and verbs in their respective Dagger modules
 
 ## What’s Next
 
-Thank you for taking a break from the constant supply of AI news buzz to delve deeper into aspects of software delivery. If you have any questions, feel free to hop on Runme’s Discord server or create a GitHub issue.
+Thank you for taking a break from the AI news buzz to delve into what we're up to with Runme and Dagger. We're both incredibly grateful for the opportunity to guest contribute to Dagger's blog and love everything about the Dagger ecosystem. If you have any questions, feel free to find Sebastian on [Runme's Discord server](https://discord.gg/runme) (aka 'sourishkrout') or [create a GitHub issue](https://github.com/runmedev/runme/issues/new).
 
-In case you are already using Runme and want to get started with Dagger Shell, just create a file, e.g., called [`shell.dag`](https://github.com/runmedev/vscode-runme/blob/main/dagger/notebook/shell.dag), where the extension will auto-select Dagger Shell as your preferred runtime.
+By the way, it's super easy to get started with Dagger Shell inside of Runme, just create a file, e.g., called [`shell.dag`](https://github.com/runmedev/vscode-runme/blob/main/dagger/notebook/shell.dag), where the Runme extension will auto-select Dagger Shell as your preferred notebook shell.
 
 Bye-bye for now.
