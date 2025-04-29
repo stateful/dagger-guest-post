@@ -24,7 +24,7 @@ A few weeks back, the folks at Dagger released their [Container-Native Shell](ht
 
 In this blog post, we'll illustrate how we're using Runme and Dagger to replace the Runme CNCF project’s organically-grown GitHub Actions ‘YAML Pipelines’ with just Nouns and Verbs right from your docs.
 
-I will demonstrate how you can break down your YAML and Bourne-Again Shell spaghetti code into Dagger-powered, portable, and self-documenting pipeline definitions that are native to markdown. Runme stitches together the Dagger Shell scripts on the fly for execution and handles all of the environmental details, keeping your pipelines readable, portable, and executable both remotely and locally.
+I will demonstrate how you can break down your YAML and Bourne-Again Shell spaghetti code into Dagger-powered, portable, and self-documenting pipeline definitions that are native to Markdown. Runme stitches together the Dagger Shell scripts on the fly for execution and handles all of the environmental details, keeping your pipelines readable, portable, and executable both remotely and locally.
 
 My name is [Sebastian Huckleberry](https://www.linkedin.com/in/sebastiantiedtke/), I am the CEO at Stateful, we make [Runme](https://runme.dev), and I'm excited to contribute this guest blog post. Let’s dive right in.
 
@@ -159,7 +159,7 @@ What makes all this work is [Dagger’s Type System](https://docs.dagger.io/#key
 
 ## Under the Runme Frontend's Hood
 
-Under the hood, the Runme frontend will transparently transform its markdown/notebook representation into plain Dagger Shell, which, if you wanted, you could run as a Dagger Shell script in and of itself. The following script is exactly what `$ runme run ExtensionVsix` hands off to Dagger.
+Under the hood, the Runme frontend will transparently transform its Markdown/notebook representation into plain Dagger Shell, which, if you wanted, you could run as a Dagger Shell script in and of itself. The following script is exactly what `$ runme run ExtensionVsix` hands off to Dagger.
 
 ```
 $ runme print ExtensionVsix
