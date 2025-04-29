@@ -276,6 +276,8 @@ export GITHUB_ACTOR=${GITHUB_ACTOR:-unknown}
 export GITHUB_EVENT_NAME=${GITHUB_EVENT_NAME:-unknown}
 ```
 
+> 💡 Please note that `runme env store ...` features are only available with the [Runme Extension's pre-release version](https://docs.runme.dev/installation/vscode#bleeding-edge-features).
+
 Runme, as Dagger’s frontend, will resolve the Environment when a session is first created, typically at startup. Running pipelines locally, it’s simple to check if they are on the right track:
 
 <ImageWithCaption caption="The environment is invalid and will cause the pipeline to fail">
@@ -362,7 +364,7 @@ Now that we have the Delivery 'Nouns and Verbs' in their respective Dagger modul
 
 ## What’s Next
 
-Thank you for taking a break from the AI news buzz to delve into what we're up to with Runme and Dagger. I am both incredibly grateful for the opportunity to guest contribute to Dagger's blog and love everything about the ecosystem Dagger is building. If you have any questions, feel free to find Sebastian on [Runme's Discord server](https://discord.gg/runme) (aka 'sourishkrout') or [create a GitHub issue](https://github.com/runmedev/runme/issues/new).
+Thank you for taking a break from the AI news buzz to delve into what we're up to with Runme and Dagger. I am both incredibly grateful for the opportunity to guest contribute to Dagger's blog and love everything about the ecosystem Dagger is building. Check out the [Runme for Dagger guide](https://docs.runme.dev/guide/dagger) in the docs for more details. If you have any questions, feel free to find Sebastian on [Runme's Discord server](https://discord.gg/runme) (aka 'sourishkrout') or [create a GitHub issue](https://github.com/runmedev/runme/issues/new).
 
 By the way, it's super easy to get started with Dagger Shell inside of Runme, just create a file, e.g., called [`shell.dag`](https://github.com/runmedev/vscode-runme/blob/main/dagger/notebook/shell.dag), where the Runme extension will auto-select Dagger Shell as your preferred notebook shell.
 
