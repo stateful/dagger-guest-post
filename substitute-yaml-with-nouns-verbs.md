@@ -360,7 +360,7 @@ Now that we have the Delivery 'Nouns and Verbs' in their respective Dagger modul
 
 ## What’s Next
 
-Thank you for taking a break from the AI news buzz to delve into what we're up to with Runme and Dagger. We're both incredibly grateful for the opportunity to guest contribute to Dagger's blog and love everything about the Dagger ecosystem. If you have any questions, feel free to find Sebastian on [Runme's Discord server](https://discord.gg/runme) (aka 'sourishkrout') or [create a GitHub issue](https://github.com/runmedev/runme/issues/new).
+Thank you for taking a break from the AI news buzz to delve into what we're up to with Runme and Dagger. I am both incredibly grateful for the opportunity to guest contribute to Dagger's blog and love everything about the ecosystem Dagger is building. If you have any questions, feel free to find Sebastian on [Runme's Discord server](https://discord.gg/runme) (aka 'sourishkrout') or [create a GitHub issue](https://github.com/runmedev/runme/issues/new).
 
 By the way, it's super easy to get started with Dagger Shell inside of Runme, just create a file, e.g., called [`shell.dag`](https://github.com/runmedev/vscode-runme/blob/main/dagger/notebook/shell.dag), where the Runme extension will auto-select Dagger Shell as your preferred notebook shell.
 
