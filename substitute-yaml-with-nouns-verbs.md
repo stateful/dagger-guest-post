@@ -20,6 +20,8 @@ runme_blog: true
 
 A few weeks back, the folks at Dagger released their [Container-Native Shell](https://dagger.io/blog/a-shell-for-the-container-age-introducing-dagger-shell), and it’s awesome! Leading up to the launch, the team at Stateful/Runme was invited for a sneak preview and decided to build a frontend for Dagger Shell into [Runme](https://runme.dev).
 
+> It’s been great collaborating with the Runme team. They get developer tools and they get Dagger - Jeremy Adams, Head of Ecosystem, Dagger
+
 In this blog post, we'll illustrate how we're using Runme and Dagger to replace the Runme CNCF project’s organically-grown GitHub Actions ‘YAML Pipelines’ with just Nouns and Verbs right from your docs.
 
 I will demonstrate how you can break down your YAML and Bourne-Again Shell spaghetti code into Dagger-powered, portable, and self-documenting pipeline definitions that are native to markdown. Runme stitches together the Dagger Shell scripts on the fly for execution and handles all of the environmental details, keeping your pipelines readable, portable, and executable both remotely and locally.
