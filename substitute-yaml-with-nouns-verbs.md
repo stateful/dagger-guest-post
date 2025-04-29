@@ -5,7 +5,7 @@ post_author_avatar: "sebastian-(tiedtke)-huckleberry.jpg"
 post_author_url: "https://bsky.app/profile/sourishkrout.com"
 date: "2025-04-28"
 post_image: "substitute-yaml-with-nouns-verbs-cover.jpg"
-post_excerpt: "Learn how we're replacing GitHub Actions YAML pipelines with Runme for Dagger Shell, using simple Nouns and Verbs to create portable CI/CD workflows with better developer experience and no vendor lock-in."
+post_excerpt: "This post demonstrates how you can break down your YAML and Bourne-Again Shell spaghetti code into Dagger-powered, portable, and self-documenting pipelines."
 post_slug: "substitute-yaml-with-nouns-verbs"
 tags: ["developer tools", "dagger", "pipelines", "delivery", "automation", "documentation"]
 category: "runme"
