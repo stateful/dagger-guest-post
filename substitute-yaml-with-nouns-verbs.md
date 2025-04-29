@@ -18,7 +18,7 @@ canonical_url: ""
 runme_blog: true
 ---
 
-A few weeks back, the folks at Dagger released their [Container-Native Shell](https://dagger.io/blog/a-shell-for-the-container-age-introducing-dagger-shell), and it’s awesome! Leading up to the launch, the team at Stateful was invited for a sneak preview and decided to build a frontend for Dagger Shell into [Runme](https://runme.dev).
+A few weeks back, the folks at Dagger released their [Container-Native Shell](https://dagger.io/blog/a-shell-for-the-container-age-introducing-dagger-shell), and it’s awesome! Leading up to the launch, the team at Stateful/Runme was invited for a sneak preview and decided to build a frontend for Dagger Shell into [Runme](https://runme.dev).
 
 In this blog post, we'll illustrate how we're using Runme and Dagger to replace the Runme CNCF project’s organically-grown GitHub Actions ‘YAML Pipelines’ with just Nouns and Verbs right from your docs.
 
