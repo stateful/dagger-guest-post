@@ -63,13 +63,17 @@ What isn’t apparent from the Dagger Shell snippet behind the `IntegrationTests
 The integration test suite runs headlessly on Linux. Linux because headless browsers require the X Virtual Frame Buffer (xvfb) to run. Without Runme fronting Dagger, the fully expanded Shell snippet runnable on any Linux system shell is:
 
 ```sh
-dagger shell -c 'github.com/runmedev/vscode-runme | build $(github.com/runmedev/runme | link-release --version "latest" "linux/amd64") | integration-test | stdout'
+dagger shell -c 'github.com/runmedev/vscode-runme |
+    build $(github.com/runmedev/runme | link-release --version "latest" "linux/amd64") |
+    integration-test | stdout'
 ```
 
 While more elaborate, it’s still incredibly readable, and as a side benefit, you won’t need to clone any repositories to run the entire ‘pipeline’ successfully. Modules in Dagger are content-addressable, which means references, such as [`github.com/runmedev/vscode-runme`](http://github.com/runmedev/vscode-runme), are automatically fetched from GitHub. If you don’t have `xvfb` handy, just run the unit tests. Just be sure to change your local machine’s CPU architecture: `arm64` vs `amd64`.
 
 ```sh
-dagger shell -c 'github.com/runmedev/vscode-runme | build $(github.com/runmedev/runme | link-release --version "latest" "linux/amd64") | unit-test | stdout'
+dagger shell -c 'github.com/runmedev/vscode-runme |
+    build $(github.com/runmedev/runme | link-release --version "latest" "linux/amd64") |
+    unit-test | stdout'
 ```
 
 ## Runme as Frontend and UX for Dagger
