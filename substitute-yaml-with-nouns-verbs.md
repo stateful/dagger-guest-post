@@ -18,6 +18,8 @@ canonical_url: ""
 runme_blog: true
 ---
 
+My name is [Sebastian Huckleberry](https://www.linkedin.com/in/sebastiantiedtke/), I am the CEO at Stateful, we make [Runme](https://runme.dev), and I'm excited to contribute this guest blog post. Let’s dive right in.
+
 A few weeks back, the folks at Dagger released their [Container-Native Shell](https://dagger.io/blog/a-shell-for-the-container-age-introducing-dagger-shell), and it’s awesome! Leading up to the launch, the team at Stateful/Runme was invited for a sneak preview and decided to build a frontend for Dagger Shell into [Runme](https://runme.dev).
 
 > It’s been great collaborating with the Runme team. They get developer tools and they get Dagger - Jeremy Adams, Head of Ecosystem, Dagger
@@ -25,8 +27,6 @@ A few weeks back, the folks at Dagger released their [Container-Native Shell](ht
 In this blog post, we'll illustrate how we're using Runme and Dagger to replace the Runme CNCF project’s organically-grown GitHub Actions ‘YAML Pipelines’ with just Nouns and Verbs right from your docs.
 
 I will demonstrate how you can break down your YAML and Bourne-Again Shell spaghetti code into Dagger-powered, portable, and self-documenting pipeline definitions that are native to Markdown. Runme stitches together the Dagger Shell scripts on the fly for execution and handles all of the environmental details, keeping your pipelines readable, portable, and executable both remotely and locally.
-
-My name is [Sebastian Huckleberry](https://www.linkedin.com/in/sebastiantiedtke/), I am the CEO at Stateful, we make [Runme](https://runme.dev), and I'm excited to contribute this guest blog post. Let’s dive right in.
 
 <figure>
   <video
@@ -63,7 +63,7 @@ What isn’t apparent from the Dagger Shell snippet behind the `IntegrationTests
 The integration test suite runs headlessly on Linux. Linux because headless browsers require the X Virtual Frame Buffer (xvfb) to run. Without Runme fronting Dagger, the fully expanded Shell snippet runnable on any Linux system shell is:
 
 ```sh
-dagger shell -c 'github.com/runmedev/vscode-runme |
+dagger -c 'github.com/runmedev/vscode-runme |
     build $(github.com/runmedev/runme | link-release --version "latest" "linux/amd64") |
     integration-test | stdout'
 ```
@@ -71,7 +71,7 @@ dagger shell -c 'github.com/runmedev/vscode-runme |
 While more elaborate, it’s still incredibly readable, and as a side benefit, you won’t need to clone any repositories to run the entire ‘pipeline’ successfully. Modules in Dagger are content-addressable, which means references, such as [`github.com/runmedev/vscode-runme`](http://github.com/runmedev/vscode-runme), are automatically fetched from GitHub. If you don’t have `xvfb` handy, just run the unit tests. Just be sure to change your local machine’s CPU architecture: `arm64` vs `amd64`.
 
 ```sh
-dagger shell -c 'github.com/runmedev/vscode-runme |
+dagger -c 'github.com/runmedev/vscode-runme |
     build $(github.com/runmedev/runme | link-release --version "latest" "linux/amd64") |
     unit-test | stdout'
 ```
